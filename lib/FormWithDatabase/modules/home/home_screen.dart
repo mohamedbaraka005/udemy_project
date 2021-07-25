@@ -1,88 +1,100 @@
 import 'package:flutter/material.dart';
-class  Home extends StatefulWidget {
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+
+import 'cubit/homecubit.dart';
+import 'cubit/homestates.dart';
+class  Home extends StatelessWidget {
   //const ({Key? key}) : super(key: key);
-
-  @override
-  _HomeState createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(
+        create: (BuildContext context)=> HomeCubit(),
+    child: BlocConsumer<HomeCubit, HomeState>(
+    listener: (context,state){},
+    builder: (context,state){
+    //HomeCubit cubit = HomeCubit.get(context);
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
         title: Text("Home" , style: TextStyle(
-          color: Colors.black87
+            color: Colors.black87
         ),),
         backgroundColor: Colors.white,
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 15),
-              child: Row(
-                  children: [
-                    Container(
-                      height: 50,
-                      width: 30,
-                      child: InkWell(
-                        child: Icon(Icons.notifications_outlined ,color: Colors.black87,),
-                        onTap: (){},
-                      ),
-                    ),
-                    SizedBox(width: 10,),
-                    Container(
-                      height: 50,
-                      width: 30,
-                      child: InkWell(
-                            child: Icon(Icons.search,color: Colors.black87),
-                        onTap: (){},
-                      ),
-                    )
-                  ],
+            child: Row(
+              children: [
+                Container(
+                  height: 50,
+                  width: 30,
+                  child: InkWell(
+                    child: Icon(Icons.notifications_outlined ,color: Colors.black87,),
+                    onTap: (){},
+                  ),
                 ),
-              
+                SizedBox(width: 10,),
+                Container(
+                  height: 50,
+                  width: 30,
+                  child: InkWell(
+                    child: Icon(Icons.search,color: Colors.black87),
+                    onTap: (){},
+                  ),
+                )
+              ],
+            ),
+
 
           )
         ],
       ),
       body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(5.0),
-            child: Column(
-              children: [
-                Card(
-                  clipBehavior:Clip.antiAliasWithSaveLayer ,
-                  child: Stack(
-                    children: [
-                      Image.network("https://image.freepik.com/free-photo/horizontal-shot-smiling-curly-haired-woman-indicates-free-space-demonstrates-place-your-advertisement-attracts-attention-sale-wears-green-turtleneck-isolated-vibrant-pink-wall_273609-42770.jpg"),
-                      Positioned(
+        child: Padding(
+          padding: EdgeInsets.all(5.0),
+          child: Column(
+            children: [
+              Card(
+                clipBehavior:Clip.antiAliasWithSaveLayer ,
+                child: Stack(
+                  children: [
+                    Image.network("https://image.freepik.com/free-photo/horizontal-shot-smiling-curly-haired-woman-indicates-free-space-demonstrates-place-your-advertisement-attracts-attention-sale-wears-green-turtleneck-isolated-vibrant-pink-wall_273609-42770.jpg"),
+                    Positioned(
                         left: 170,
-                          top: 95,
-                          child: Column(
-                            children: [
+                        top: 95,
+                        child: Column(
+                          children: [
                             Text(" Communicate " , style: TextStyle(color: Colors.white),),
                             Text("with friends" , style: TextStyle(color: Colors.white),),
-                            ],
-                          )
-                      ),
-                    ],
+                          ],
+                        )
+                    ),
+                  ],
 
-                  ),
                 ),
-                ListView.builder(
-                    itemBuilder: (context, index) => CardCreate(context),
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: 10,
-                ),
-              ],
-            ),
+              ),
+              ListView.builder(
+                itemBuilder: (context, index) => CardCreate(context),
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: 10,
+              ),
+            ],
           ),
+        ),
 
       ),
     );
+    },
+    ),
+
+    );
   }
+
 }
+
+
 
 Widget CardCreate (ctx)
 {
