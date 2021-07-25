@@ -1,6 +1,6 @@
 abstract class UserState
 {
-
+   // just a comment.
 }
 class InitialState extends UserState {
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_app_work/FormWithDatabase/providers/blocobserver.dart';
 import 'package:flutter_app_work/FormWithDatabase/providers/states.dart';
 import 'package:flutter_app_work/FormWithDatabase/providers/cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,10 +8,9 @@ import '../models/user_model.dart';
 import 'settings_screen.dart';
 import '../TextTormFieldCreation.dart';
 import 'Verification_theemail_screen.dart';
-import 'navigationbar_screen.dart';
+import 'navigationbar/navigationbar_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 main() async{
   //initialize the flutter fire
