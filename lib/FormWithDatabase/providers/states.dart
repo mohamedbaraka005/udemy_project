@@ -1,6 +1,6 @@
 abstract class UserState
 {
-   //uses only to inheritance.
+
 }
 class InitialState extends UserState {
 
