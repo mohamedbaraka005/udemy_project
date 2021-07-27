@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class Settingss extends StatefulWidget {
-  //const Settings({Key? key}) : super(key: key);
-  @override
-  _SettingssState createState() => _SettingssState();
-}
+import 'cubit/settingsCubit.dart';
+import 'cubit/settingsStates.dart';
 
-class _SettingssState extends State<Settingss> {
+class Settingss extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocConsumer<SettingsCubit, SettingsState>(
+      listener: (context,state){
+        state == GetUserDataSuccessState()?
+        SettingsCubit.get(context).changeLoading(true):
+        SettingsCubit.get(context).changeLoading(false);
+      },
+      builder: (context,state){
+        print("-+-+-+-+-+-+-+-+--++-+-++--+Welcome Settings Screen . . .");
+      var user = SettingsCubit.get(context).user1;
+
+      return SettingsCubit.get(context).Loading==false? Scaffold(
         appBar: AppBar(
           title: Text("Settings" , style: TextStyle(
               color: Colors.black87
@@ -42,46 +50,46 @@ class _SettingssState extends State<Settingss> {
             )
           ],
         ),
-      body: Padding(
-        padding: EdgeInsets.all(5),
-        child: Column(
-          children: [
-            Container(
-              height: 190,
-              child: Stack(
-                alignment:AlignmentDirectional.bottomCenter,
-                children: [
-                  Align(
-                    alignment:AlignmentDirectional.topCenter,
-                    child: Container(
-                      width: double.infinity,
-                      height: 140,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          image: DecorationImage(
-                            image:NetworkImage("https://image.freepik.com/free-photo/horizontal-shot-smiling-curly-haired-woman-indicates-free-space-demonstrates-place-your-advertisement-attracts-attention-sale-wears-green-turtleneck-isolated-vibrant-pink-wall_273609-42770.jpg"),
-                            fit: BoxFit.cover,
-                          )
+        body: Padding(
+          padding: EdgeInsets.all(5),
+          child: Column(
+            children: [
+              Container(
+                height: 190,
+                child: Stack(
+                  alignment:AlignmentDirectional.bottomCenter,
+                  children: [
+                    Align(
+                      alignment:AlignmentDirectional.topCenter,
+                      child: Container(
+                        width: double.infinity,
+                        height: 140,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            image: DecorationImage(
+                              image:NetworkImage('${user.cover}'),
+                              fit: BoxFit.cover,
+                            )
+                        ),
                       ),
                     ),
-                  ),
-                  CircleAvatar(
-                    radius: 64,
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    child: CircleAvatar(
-                      radius: 60,
-                      backgroundImage: NetworkImage("https://i.pinimg.com/236x/91/c7/c6/91c7c6f819a1cfb330db7b7fb63aa69c--hair-affair-mens-hair.jpg"),
+                    CircleAvatar(
+                      radius: 64,
+                      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                      child: CircleAvatar(
+                        radius: 60,
+                        backgroundImage: NetworkImage('${user.image}'),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            SizedBox(height: 10,),
-            Text("Mohamed Mabrouk" , style: Theme.of(context).textTheme.subtitle2,),
-            SizedBox(height: 8,),
-            Text(" bio ..." , style: Theme.of(context).textTheme.bodyText2,),
-            SizedBox(height: 5,),
-             Row(
+              SizedBox(height: 10,),
+              Text('${user.name}' , style: Theme.of(context).textTheme.subtitle2,),
+              SizedBox(height: 8,),
+              Text('${user.bio}', style: Theme.of(context).textTheme.bodyText2,),
+              SizedBox(height: 5,),
+              Row(
                 children: [
                   Expanded(
                     child: InkWell(
@@ -146,30 +154,43 @@ class _SettingssState extends State<Settingss> {
                 ],
               ),
 
-            Padding(
-              padding: EdgeInsets.only(left: 8, right: 8),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: (){},
-                      child: Text("Add Photos"),
+              Padding(
+                padding: EdgeInsets.only(left: 8, right: 8),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: (){},
+                        child: Text("Add Photos"),
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 6,
-                  ),
-                  OutlinedButton(
-                    onPressed: (){},
-                    child: Icon(Icons.edit),
-                  )
-                ],
-              ),
-            )
+                    SizedBox(
+                      width: 6,
+                    ),
+                    OutlinedButton(
+                      onPressed: (){},
+                      child: Icon(Icons.edit),
+                    )
+                  ],
+                ),
+              )
 
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      ):Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(
+            strokeWidth: 6,
+            backgroundColor: Colors.orange,
+            valueColor:AlwaysStoppedAnimation<Color>(Colors.white) ,
+          ),
+        ),
+      );
+      });
   }
-}
+
+  }
+
+
+
