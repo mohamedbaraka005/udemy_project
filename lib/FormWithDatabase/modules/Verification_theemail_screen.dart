@@ -9,7 +9,7 @@ class VerificateEmail extends StatefulWidget {
 class _VerificateEmailState extends State<VerificateEmail> {
   @override
   Widget build(BuildContext context) {
-    return    Scaffold(
+    return Scaffold(
       body: Column(
         children: [
           SizedBox(height: 24,),
