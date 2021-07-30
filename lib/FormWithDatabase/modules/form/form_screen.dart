@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_app_work/FormWithDatabase/modules/form/cubit/formstate.dart';
 import 'package:flutter_app_work/FormWithDatabase/modules/form/cubit/formcubit.dart';
+import 'package:flutter_app_work/FormWithDatabase/modules/settings/cubit/settingsCubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../shared.dart';
@@ -10,6 +11,8 @@ import '../../TextTormFieldCreation.dart';
 import '../Verification_theemail_screen.dart';
 import '../navigationbar/navigationbar_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+
+import '../updateProfile_screen.dart';
 
 
 main() async{
@@ -24,17 +27,21 @@ class myApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Form1(),
-        initialRoute: '/tt',
-        routes: {
-          '/tt': (context) => Form1(),
-          '/nb': (context) => NavigationBarScreen(),
-          '/ve': (context) => VerificateEmail(),
-          '/s' : (context)  =>Settingss(),
-        },
-      );
+    return BlocProvider(
+      create: (context)=>SettingsCubit()..getUserData(),
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: Form1(),
+          initialRoute: '/tt',
+          routes: {
+            '/tt': (context) => Form1(),
+            '/nb': (context) => NavigationBarScreen(),
+            '/ve': (context) => VerificateEmail(),
+            '/s' : (context)  =>Settingss(),
+            '/ep':(context)=> EditProfile(),
+          },
+        ),
+    );
 
   }
 }

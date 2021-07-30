@@ -8,6 +8,7 @@ class SocialUserModel
   String cover;
   String bio;
   bool isVerified ;
+  String phone ;
 
   SocialUserModel
       (
@@ -20,6 +21,7 @@ class SocialUserModel
         this.cover,
         this.bio,
         this.isVerified,
+        this.phone,
       }
       );
 
@@ -34,6 +36,7 @@ class SocialUserModel
     cover = json['cover'];
     bio = json['bio'];
     isVerified =json['isVerified'];
+    phone = json['phone'];
   }
 
  Map< String , dynamic > toMap()
@@ -47,6 +50,7 @@ class SocialUserModel
      'cover':cover,
      'isVerified':isVerified,
       'bio' : bio,
+      'phone':phone,
    };
  }
 }
