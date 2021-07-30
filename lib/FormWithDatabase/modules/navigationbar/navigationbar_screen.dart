@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_work/FormWithDatabase/modules/navigationbar/cubit/navigationbarcubit.dart';
-import 'package:flutter_app_work/FormWithDatabase/modules/settings/cubit/settingsCubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'cubit/navigationbarstates.dart';
@@ -9,12 +8,8 @@ import 'cubit/navigationbarstates.dart';
 class NavigationBarScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-   return MultiBlocProvider(
-     providers: [
-       BlocProvider(
-       create: (BuildContext context)=> NavigationCubit(),),
-       BlocProvider(create: (context)=>SettingsCubit()..getUserData(),)
-     ],
+   return BlocProvider(
+       create: (BuildContext context)=> NavigationCubit(),
       child: BlocConsumer<NavigationCubit, NavigationState>(
       listener: (context,state){},
       builder: (context,state){
@@ -45,10 +40,10 @@ class NavigationBarScreen extends StatelessWidget {
         ),
       );
       },
-      ),
+      ));
 
 
-   );
+
   }
 
 }

@@ -14,7 +14,7 @@ class MyCubit extends Cubit<UserState> {
   //make an object from the cubit to make it easy to use :
   static MyCubit get(context) => BlocProvider.of(context);
 
-  bool SingInMode = false;
+  bool SingInMode = true;
   bool KeepMeSigned = false;
   bool ShowPassword = true;
   bool showindecator = false;
