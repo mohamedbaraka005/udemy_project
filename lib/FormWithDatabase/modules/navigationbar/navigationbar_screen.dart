@@ -13,18 +13,21 @@ class NavigationBarScreen extends StatelessWidget {
       child: BlocConsumer<NavigationCubit, NavigationState>(
       listener: (context,state){},
       builder: (context,state){
-
       NavigationCubit cubit = NavigationCubit.get(context);
       return Scaffold(
         body:cubit.pages[cubit.SelectedIndex]['page'],
         bottomNavigationBar: BottomNavigationBar(
-          currentIndex: cubit.SelectedIndex,
-          onTap: NavigationCubit.get(context).x,
+          //iconSize: 30,
           backgroundColor: Color(0xffe3b23c),
+          currentIndex: cubit.SelectedIndex,
+          onTap:NavigationCubit.get(context).x,
           selectedItemColor: Color(0xff570000),
           selectedFontSize: 15,
           unselectedItemColor: Color(0xffb80c09),
           unselectedFontSize: 10,
+          //when the navigation bar color or label have a problem
+          //put the type fixed
+          type: BottomNavigationBarType.fixed,
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_outlined),
@@ -36,6 +39,9 @@ class NavigationBarScreen extends StatelessWidget {
             BottomNavigationBarItem(
                 icon: Icon(Icons.line_style_rounded),
                 label: cubit.pages[2]['title']),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.settings),
+                label: cubit.pages[3]['title']),
           ],
         ),
       );

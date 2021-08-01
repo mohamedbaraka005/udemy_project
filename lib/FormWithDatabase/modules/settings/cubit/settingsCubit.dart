@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:flutter_app_work/FormWithDatabase/models/post_model.dart';
 import 'package:flutter_app_work/FormWithDatabase/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_work/FormWithDatabase/modules/settings/cubit/settingsStates.dart';
@@ -310,4 +311,108 @@ class SettingsCubit extends Cubit<SettingsState>
     })
         .catchError((onError){});
   }
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////            Create Post            ///////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  File PostImage ;
+  var PostPicker = ImagePicker();
+  Future<void> getPostImage() async
+  {
+    final pickedFile = await PostPicker.getImage(
+      source: ImageSource.gallery,
+    );
+    if(PickedFile != null )
+    {
+      PostImage = File(pickedFile.path);
+      emit(CoverImagePickedSuccessState());
+    }
+    else
+    {
+      print("no image");
+      emit(CoverImagePickedErrorState());
+    }
+  }
+
+  void DeletePostImaga()
+  {
+    PostImage = null;
+    emit(DeletePostImageState());
+  }
+
+  void uploadPostImage(String text)
+  {
+    emit(UploadPostImageLoadingState());
+    firebase_storage.FirebaseStorage.instance
+        .ref()//to enter the storage
+        .child('Posts/${Uri.file(PostImage.path).pathSegments.last}') //to create the folder and the name of image
+        .putFile(PostImage)//the image
+        .then((value){
+         value.ref.getDownloadURL()
+          .then((value) {
+            //to create the post with the image
+           CreatePost(value,text);
+
+        emit(UploadPostImageSuccessState());
+      })
+          .catchError((onError){emit(UploadPostImageErrorState());});
+    })
+        .catchError((onError){emit(UploadPostImageErrorState());});
+  }
+
+  void CreatePost(String postimage , String text)
+  {
+    emit(CreatePostLoadingState());
+    Post postData =Post(
+      name: user1.name,
+      uId: user1.uId,
+      image: user1.image,
+      date: DateTime.now().toString(),
+      postImage: postimage,
+      text: text,
+    );
+    FirebaseFirestore.instance
+        .collection('Posts')
+        .add(postData.toMap())
+        .then((value) {
+      emit(CreatePostSuccessState());
+      print("Create Post Ended");
+    })
+        .catchError((onError){emit(CreatePostErrorState());});
+  }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////            Home Screen            ///////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ List <Post> posts = [];
+  void getPostsData()
+  {
+    //print('+++++++++++++++++++++++${user1.name}');
+    emit(GetPostsDataLoadingState());
+    FirebaseFirestore.instance
+        .collection('Posts')
+        .get()
+        .then((value) {
+
+
+          value.docs.forEach((element) {
+            posts.add(Post.fromJson(element.data()));
+          });
+
+      emit(GetPostsDataSuccessState());
+      print("Get Posts ended");
+
+
+    })
+        .catchError((onError){
+      emit(GetPostsDataErrorState());
+    });
+  }
+
+
 }
+
+
+
