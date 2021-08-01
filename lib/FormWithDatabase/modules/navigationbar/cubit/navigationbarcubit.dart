@@ -1,11 +1,11 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_app_work/FormWithDatabase/models/user_model.dart';
+
 import 'package:flutter_app_work/FormWithDatabase/modules/home/home_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../../shared.dart';
+
+
+import '../../chat_screen.dart';
+import '../../post_screen.dart';
 import '../../settings/settings_screen.dart';
 import 'navigationbarstates.dart';
 
@@ -25,21 +25,18 @@ class NavigationCubit extends Cubit<NavigationState>
       'title': "Home",
     },
     {
+      'page': ChatScreen(),
+      'title': "Chat"
+    },
+    {
+      'page': PostScreen(),
+      'title': "Post",
+    },
+    {
       'page':Settingss(),
       'title': "Settings",
     },
-    {
-      'page': Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(
-            strokeWidth: 6,
-            backgroundColor: Colors.orange,
-            valueColor:AlwaysStoppedAnimation<Color>(Colors.white) ,
-          ),
-        ),
-      ),
-      'title': "Chat"
-    }
+
   ];
 
 
@@ -50,22 +47,24 @@ class NavigationCubit extends Cubit<NavigationState>
       SelectedIndex = index;
       emit(NavigationSuccessState());
   }
-  SocialUserModel user1 ;
-  getUserData()
-  {
-    emit(state);
-    FirebaseFirestore.instance
-        .collection('Users')
-        .doc('${Helper.getString("uid")}')
-        .get()
-        .then((value) {
-      user1 = SocialUserModel.fromJson(value.data());
-      emit(state);
-    })
-        .catchError((onError){
-      emit(state);
-    });
-  }
+
+
+  // SocialUserModel user1 ;
+  // getUserData()
+  // {
+  //   emit(state);
+  //   FirebaseFirestore.instance
+  //       .collection('Users')
+  //       .doc('${Helper.getString("uid")}')
+  //       .get()
+  //       .then((value) {
+  //     user1 = SocialUserModel.fromJson(value.data());
+  //     emit(state);
+  //   })
+  //       .catchError((onError){
+  //     emit(state);
+  //   });
+  // }
 
 
 }

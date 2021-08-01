@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_app_work/FormWithDatabase/modules/form/cubit/formstate.dart';
 import 'package:flutter_app_work/FormWithDatabase/modules/form/cubit/formcubit.dart';
+import 'package:flutter_app_work/FormWithDatabase/modules/home/home_screen.dart';
 import 'package:flutter_app_work/FormWithDatabase/modules/settings/cubit/settingsCubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../shared.dart';
+import '../chat_screen.dart';
+import '../post_screen.dart';
 import '../settings/settings_screen.dart';
 import '../../TextTormFieldCreation.dart';
 import '../Verification_theemail_screen.dart';
@@ -28,7 +31,7 @@ class myApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return BlocProvider(
-      create: (context)=>SettingsCubit()..getUserData(),
+      create: (context)=>SettingsCubit()..getUserData()..getPostsData(),
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           home: Form1(),
@@ -39,6 +42,9 @@ class myApp extends StatelessWidget {
             '/ve': (context) => VerificateEmail(),
             '/s' : (context)  =>Settingss(),
             '/ep':(context)=> EditProfile(),
+            '/cs' : (context)  =>ChatScreen(),
+            '/ps':(context)=> PostScreen(),
+            '/h':(context)=> Home(),
           },
         ),
     );

@@ -62,13 +62,25 @@ class MyCubit extends Cubit<UserState> {
     emit(SigninState());
   }
 
-  void SaveUser(String uId , SocialUserModel user) {
+  void SaveUser(String uid) {
+
     emit(SaveUserDataLoadingState());
-    user.uId =uId;
+    SocialUserModel user =SocialUserModel(
+        name:nameController.text.toString(),
+        email: emailController.text.toString(),
+        password: passwordController.text.toString(),
+        cover: "https://media.istockphoto.com/photos/happy-smiling-man-looking-away-picture-id1158245623?k=6&m=1158245623&s=612x612&w=0&h=y0LbpRFMHMj_9YC_kpKvLYcijEunxP27KyjXBrDHcFg=",
+        image: "https://media.istockphoto.com/photos/happy-smiling-man-looking-away-picture-id1158245623?k=6&m=1158245623&s=612x612&w=0&h=y0LbpRFMHMj_9YC_kpKvLYcijEunxP27KyjXBrDHcFg=",
+        isVerified: false,
+        bio: "write your bio ...",
+        uId: uid,
+        phone: "+++++++++++++"
+    );
+    //user.uId = uId ;
     Helper.putString('uid', user.uId);
     FirebaseFirestore.instance
         .collection("Users")
-        .doc(uId)
+        .doc(uid)
         .set(user.toMap())
         .then((value) {
           print("---------------------------add");
@@ -84,24 +96,16 @@ class MyCubit extends Cubit<UserState> {
 
     emit(CreateUserLoadingState());
 
-    SocialUserModel user =SocialUserModel(
-      name:nameController.text.toString(),
-      email: emailController.text.toString(),
-      password: passwordController.text.toString(),
-      cover: "https://media.istockphoto.com/photos/happy-smiling-man-looking-away-picture-id1158245623?k=6&m=1158245623&s=612x612&w=0&h=y0LbpRFMHMj_9YC_kpKvLYcijEunxP27KyjXBrDHcFg=",
-      image: "https://media.istockphoto.com/photos/happy-smiling-man-looking-away-picture-id1158245623?k=6&m=1158245623&s=612x612&w=0&h=y0LbpRFMHMj_9YC_kpKvLYcijEunxP27KyjXBrDHcFg=",
-      isVerified: false,
-      bio: "write your bio ..."
-    );
+
 
     await FirebaseAuth.instance
         .createUserWithEmailAndPassword(
-      email: user.email,
-      password: user.password,
+      email:  emailController.text.toString(),
+      password: passwordController.text.toString(),
     )
         .then((value) {
       emit(CreateUserSuccessState());
-       SaveUser(value.user.uid , user);
+       SaveUser(value.user.uid );
     })
         .catchError((onError) {
       emit(CreateUserErrorState());
@@ -116,8 +120,10 @@ class MyCubit extends Cubit<UserState> {
       password: passwordController.text.toString(),
     )
         .then((value) {
+
       emit(SignInSuccessState());
-      print("sing in finished:--------");
+      Helper.putString('uid', value.user.uid);
+      print("sing in finished:--------${value.user.uid}");
     })
         .catchError((onError){
       emit(SignInErrorState());
