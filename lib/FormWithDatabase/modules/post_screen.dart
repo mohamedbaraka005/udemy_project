@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_work/FormWithDatabase/modules/settings/cubit/settingsCubit.dart';
 import 'package:flutter_app_work/FormWithDatabase/modules/settings/cubit/settingsStates.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 class PostScreen extends StatelessWidget {
   //const Post-Screen({Key? key}) : super(key: key);
   var postController = TextEditingController();
@@ -29,6 +30,8 @@ class PostScreen extends StatelessWidget {
                       cubit.CreatePost("", postController.text.toString()):
                       cubit.uploadPostImage( postController.text.toString());
                   postController.clear();
+
+
                 }
                 : null ,
                 child: Text("Post"),

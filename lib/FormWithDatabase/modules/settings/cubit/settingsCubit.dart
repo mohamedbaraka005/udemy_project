@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:uuid/uuid.dart';
 import 'package:flutter_app_work/FormWithDatabase/models/post_model.dart';
 import 'package:flutter_app_work/FormWithDatabase/models/user_model.dart';
 import 'package:flutter/material.dart';
@@ -364,8 +365,13 @@ class SettingsCubit extends Cubit<SettingsState>
 
   void CreatePost(String postimage , String text)
   {
+    //to create a unique id :
+    var uuid = Uuid();
+    String postId = uuid.v1();
+
     emit(CreatePostLoadingState());
     Post postData =Post(
+      postId: postId,
       name: user1.name,
       uId: user1.uId,
       image: user1.image,
@@ -375,7 +381,8 @@ class SettingsCubit extends Cubit<SettingsState>
     );
     FirebaseFirestore.instance
         .collection('Posts')
-        .add(postData.toMap())
+        .doc(postId)
+        .set(postData.toMap())
         .then((value) {
       emit(CreatePostSuccessState());
       print("Create Post Ended");
@@ -387,30 +394,96 @@ class SettingsCubit extends Cubit<SettingsState>
 //////////////////////////////////////            Home Screen            ///////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  List <Post> posts = [];
+  List<int>  likes =[];
+  List<int>  comments =[];
+
   void getPostsData()
   {
-    //print('+++++++++++++++++++++++${user1.name}');
     emit(GetPostsDataLoadingState());
     FirebaseFirestore.instance
         .collection('Posts')
         .get()
         .then((value) {
-
-
           value.docs.forEach((element) {
-            posts.add(Post.fromJson(element.data()));
+        ////////////////////////////////////////////////////// GET LIKES
+            element.reference.collection('Likes')
+                .get().then(
+                    (value) {
+                      likes.add(value.docs.length);
+                      ////////////////////////////////////////////////////////// GET COMMENTS
+                      element.reference.collection('Comments').get().then(
+                              (value) {
+                            comments.add(value.docs.length);
+                            //////////////////////////////////////////////////////////finally GET Posts after likes and comments done
+                            posts.add(Post.fromJson(element.data()));
+                            emit(GetPostsDataSuccessState());
+                            print("Get Posts ended");
+                          })
+                          .catchError(onError);
+                    })
+                .catchError(onError);
           });
-
-      emit(GetPostsDataSuccessState());
-      print("Get Posts ended");
-
-
     })
         .catchError((onError){
       emit(GetPostsDataErrorState());
     });
   }
 
+
+  void sendLike( String postId , String userId)
+  {
+
+    emit(SendLikeLoadingState());
+    FirebaseFirestore.instance
+        .collection('Posts')
+        .doc(postId)
+        .collection('Likes')
+        .doc(userId)
+         .set({
+      'uId':user1.uId,
+      'name':user1.name,
+      'image':user1.image
+         })
+        .then((value) {
+
+      emit(SendLikeSuccessState());
+      print("send like ended");
+
+    })
+        .catchError((onError){
+      emit(SendLikeErrorState());
+    });
+  }
+
+  void sendComment( String postId , String userId , String text)
+  {
+    //to create a unique id :
+    var uuid = Uuid();
+    String commentId = uuid.v1();
+
+    emit(SendCommentLoadingState());
+    FirebaseFirestore.instance
+        .collection('Posts')
+        .doc(postId)
+        .collection('Comments')
+        .doc(commentId)
+        .set({
+      'uId':user1.uId,
+      'name':user1.name,
+      'image':user1.image,
+      'commentId':commentId,
+      'text':text,
+    })
+        .then((value) {
+
+      emit(SendCommentSuccessState());
+      print("send Comment ended");
+
+    })
+        .catchError((onError){
+      emit(SendCommentErrorState());
+    });
+  }
 
 }
 

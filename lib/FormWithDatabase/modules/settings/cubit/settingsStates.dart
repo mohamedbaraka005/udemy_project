@@ -125,3 +125,24 @@ class GetPostsDataSuccessState extends SettingsState {
 class GetPostsDataErrorState extends SettingsState {
 
 }
+
+
+class SendLikeLoadingState extends SettingsState {
+
+}
+class SendLikeSuccessState extends SettingsState {
+
+}
+class SendLikeErrorState extends SettingsState {
+
+}
+
+class SendCommentLoadingState extends SettingsState {
+
+}
+class SendCommentSuccessState extends SettingsState {
+
+}
+class SendCommentErrorState extends SettingsState {
+
+}
