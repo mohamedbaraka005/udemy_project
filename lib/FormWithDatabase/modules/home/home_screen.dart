@@ -14,7 +14,7 @@ class  Home extends StatelessWidget {
     builder: (context,state){
     //HomeCubit cubit = HomeCubit.get(context);
     return
-      SettingsCubit.get(context).posts.length==0?
+      SettingsCubit.get(context).posts.length == 0 ?
       Scaffold(
         body: Center(
           child: CircularProgressIndicator(
@@ -85,7 +85,7 @@ class  Home extends StatelessWidget {
                   ),
                 ),
                 ListView.builder(
-                  itemBuilder: (context, index) => CardCreate(SettingsCubit.get(context).posts[index],context),
+                  itemBuilder: (context, index) => CardCreate(SettingsCubit.get(context).posts[index],context , index),
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: SettingsCubit.get(context).posts.length,
@@ -104,7 +104,7 @@ class  Home extends StatelessWidget {
 
 
 
-Widget CardCreate (Post post ,ctx)
+Widget CardCreate (Post post ,ctx , index)
 {
   return Card(
       child: Padding(
@@ -226,7 +226,7 @@ Widget CardCreate (Post post ,ctx)
                         children: [
                           Icon(Icons.auto_fix_high , color: Colors.red,size: 15,),
                           SizedBox(width: 4,),
-                          Text("0", style: Theme.of(ctx).textTheme.caption,),
+                          Text(SettingsCubit.get(ctx).likes.length==0?"0":"${SettingsCubit.get(ctx).likes[index]}", style: Theme.of(ctx).textTheme.caption,),//${SettingsCubit.get(ctx).likes[index]}
                         ],
                       ),
                     ),),
@@ -241,7 +241,7 @@ Widget CardCreate (Post post ,ctx)
                         children: [
                           Icon(Icons.message , color: Colors.blueAccent,size: 15,),
                           SizedBox(width: 4,),
-                          Text("0 comment" , style: Theme.of(ctx).textTheme.caption,),
+                          Text(SettingsCubit.get(ctx).comments.length==0?"0 comment":"${SettingsCubit.get(ctx).comments[index]}" , style: Theme.of(ctx).textTheme.caption,),//*${SettingsCubit.get(ctx).comments[index] }
                         ],
                       ),),
                   ),
@@ -256,7 +256,9 @@ Widget CardCreate (Post post ,ctx)
             Row(
               children: [
                 InkWell(
-                  onTap: (){},
+                  onTap: (){
+                    SettingsCubit.get(ctx).sendComment(post.postId,SettingsCubit.get(ctx).user1.uId , "comment");
+                  },
                   child: Padding(
                     padding: EdgeInsets.only(top: 10 , bottom: 10 , right: 10, left: 5),
                     child: Row(
@@ -273,7 +275,9 @@ Widget CardCreate (Post post ,ctx)
                 ),
                 Expanded(
                   child: InkWell(
-                    onTap: (){},
+                    onTap: (){
+                      SettingsCubit.get(ctx).sendLike( post.postId, SettingsCubit.get(ctx).user1.uId );
+                    },
                     child: Padding(
                       padding:EdgeInsets.only(top: 10 , bottom: 10 , right: 10, left: 5) ,
                       child: Row(

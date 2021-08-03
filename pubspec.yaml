@@ -53,6 +53,7 @@ dev_dependencies:
   modal_bottom_sheet: ^1.0.0+1
   image_picker: ^0.6.7+22
   firebase_storage: ^7.0.0
+  uuid: ^2.2.2
 
 
 # For information on the generic Dart part of this file, see the
